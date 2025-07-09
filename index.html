@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Work Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <i class="fas fa-stopwatch"></i>
+                    WorkTracker Pro
+                </h1>
+                <div class="period-info">
+                    <span class="period-label" id="currentPeriodLabel">Period 1</span>
+                    <span class="period-hours" id="currentPeriodHours">0h</span>
+                </div>
+            </div>
+            <div class="period-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="periodProgress"></div>
+                </div>
+                <span class="progress-text" id="progressText">5 days remaining</span>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-tab="track">
+                <i class="fas fa-play"></i>
+                <span>Track</span>
+            </button>
+            <button class="nav-btn" data-tab="daily">
+                <i class="fas fa-calendar-day"></i>
+                <span>Daily</span>
+            </button>
+            <button class="nav-btn" data-tab="reports">
+                <i class="fas fa-file-alt"></i>
+                <span>Reports</span>
+            </button>
+            <button class="nav-btn" data-tab="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Track Tab -->
+            <section class="tab-content active" id="track-tab">
+                <div class="quick-start">
+                    <h2>Start Tracking</h2>
+                    <div class="category-grid" id="categoryGrid">
+                        <!-- Categories will be populated here -->
+                    </div>
+                </div>
+
+                <div class="timer-section" id="timerSection" style="display: none;">
+                    <div class="timer-card">
+                        <div class="category-info">
+                            <div class="category-icon" id="timerCategoryIcon"></div>
+                            <div class="category-details">
+                                <span class="category-name" id="timerCategoryName"></span>
+                                <span class="category-rate" id="timerCategoryRate"></span>
+                            </div>
+                        </div>
+                        <div class="timer-display">
+                            <span class="timer-time" id="timerDisplay">00:00:00</span>
+                            <span class="timer-earnings" id="timerEarnings">$0.00</span>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="timer-btn start" id="startBtn">
+                                <i class="fas fa-play"></i>
+                                Start
+                            </button>
+                            <button class="timer-btn pause" id="pauseBtn" style="display: none;">
+                                <i class="fas fa-pause"></i>
+                                Pause
+                            </button>
+                            <button class="timer-btn stop" id="stopBtn" style="display: none;">
+                                <i class="fas fa-stop"></i>
+                                Finish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-entry">
+                    <h3>Manual Entry</h3>
+                    <form id="manualForm" class="manual-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Date</label>
+                                <input type="date" id="manualDate" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Category</label>
+                                <select id="manualCategory" required>
+                                    <option value="">Select category</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Start Time</label>
+                                <input type="time" id="manualStart" required>
+                            </div>
+                            <div class="input-group">
+                                <label>End Time</label>
+                                <input type="time" id="manualEnd" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Notes</label>
+                            <textarea id="manualNotes" placeholder="Optional notes..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i>
+                            Save Entry
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Daily Tab -->
+            <section class="tab-content" id="daily-tab">
+                <div class="daily-header">
+                    <h2>Daily View</h2>
+                    <div class="date-navigator">
+                        <button class="nav-arrow" id="prevDay">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="current-date" id="currentDate"></span>
+                        <button class="nav-arrow" id="nextDay">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="daily-summary" id="dailySummary">
+                    <!-- Daily summary will be populated here -->
+                </div>
+                <div class="daily-entries" id="dailyEntries">
+                    <!-- Daily entries will be populated here -->
+                </div>
+            </section>
+
+            <!-- Reports Tab -->
+            <section class="tab-content" id="reports-tab">
+                <div class="reports-header">
+                    <h2>Reports</h2>
+                    <div class="report-controls">
+                        <select id="reportPeriod" class="report-select">
+                            <option value="current">Current Period</option>
+                            <option value="previous">Previous Period</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <button class="export-btn" id="exportBtn">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="custom-range" id="customRange" style="display: none;">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>From Date</label>
+                            <input type="date" id="customFromDate">
+                        </div>
+                        <div class="input-group">
+                            <label>To Date</label>
+                            <input type="date" id="customToDate">
+                        </div>
+                    </div>
+                    <button class="generate-btn" id="generateCustomReport">Generate Report</button>
+                </div>
+
+                <div class="report-container" id="reportContainer">
+                    <!-- Report will be populated here -->
+                </div>
+            </section>
+
+            <!-- Settings Tab -->
+            <section class="tab-content" id="settings-tab">
+                <div class="settings-section">
+                    <h2>Bi-Weekly Period Setup</h2>
+                    <div class="period-setup">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Period Start Date</label>
+                                <input type="date" id="periodStartDate">
+                            </div>
+                            <div class="input-group">
+                                <label>Period Length</label>
+                                <select id="periodLength">
+                                    <option value="14">14 Days (Bi-weekly)</option>
+                                    <option value="7">7 Days (Weekly)</option>
+                                    <option value="30">30 Days (Monthly)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="save-btn" id="savePeriodSettings">
+                            <i class="fas fa-save"></i>
+                            Save Period Settings
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Work Categories</h2>
+                    <div class="category-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Category Name</label>
+                                <input type="text" id="categoryName" placeholder="e.g., Restaurant Server">
+                            </div>
+                            <div class="input-group">
+                                <label>Hourly Rate ($)</label>
+                                <input type="number" id="categoryRate" step="0.01" placeholder="15.00">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Icon</label>
+                                <select id="categoryIcon">
+                                    <option value="fas fa-utensils">🍽️ Restaurant</option>
+                                    <option value="fas fa-broom">🧹 Cleaning</option>
+                                    <option value="fas fa-building">🏢 Office</option>
+                                    <option value="fas fa-truck">🚚 Delivery</option>
+                                    <option value="fas fa-store">🏪 Retail</option>
+                                    <option value="fas fa-hammer">🔨 Construction</option>
+                                    <option value="fas fa-laptop">💻 Tech</option>
+                                    <option value="fas fa-briefcase">💼 Other</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Color</label>
+                                <select id="categoryColor">
+                                    <option value="yellow">Yellow</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="purple">Purple</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="add-btn" id="addCategory">
+                            <i class="fas fa-plus"></i>
+                            Add Category
+                        </button>
+                    </div>
+
+                    <div class="categories-list" id="categoriesList">
+                        <!-- Categories will be populated here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Print Report Modal -->
+        <div class="modal" id="printModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Export Report</h3>
+                    <button class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="print-preview" id="printPreview">
+                    <!-- Print preview will be populated here -->
+                </div>
+                <div class="modal-actions">
+                    <button class="print-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        Print / Save as PDF
+                    </button>
+                    <button class="screenshot-btn" id="screenshotBtn">
+                        <i class="fas fa-camera"></i>
+                        Take Screenshot
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast" id="toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Success!</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
